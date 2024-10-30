@@ -1,0 +1,133 @@
+
+.favorites-window {
+    position: fixed;
+    right: -355px;  
+    max-width: fit-content;
+    top: 35%;  
+    padding: 10px;
+    background-color: #c78f35;
+    border-top-left-radius: 30px;
+    border-bottom-left-radius: 30px;
+    transition: right 0.3s ease-in-out;
+    overflow-y: auto;  
+    max-height: 300px; 
+    opacity: 0.9;
+    z-index: 2;
+    animation: slideIn 0.3s ease-in-out;
+}
+
+
+
+
+
+
+
+@keyframes slideIn {
+    from {
+        right: -355px;
+    }
+    to {
+        right: 0;
+    }
+}
+
+ 
+favorites-window.active {
+    right: 0;  
+    animation: slideOut 0.3s ease-in-out;
+ 
+    pointer-events: none;
+    pointer-events: auto;
+
+
+}
+.favorites-window ul {
+    margin: 5px 0 0 0;
+    padding: 5px 5px 0 5px;
+}
+.favorites-window h2 {
+    text-align: center;
+    font-size: 18px;
+    color: #333;
+}
+.favorites-window img {
+    width: 100px;
+    object-fit: cover;
+    height: 100px;
+    margin-right: 10px;
+    border-radius: 5px;
+}
+
+.favorites-window.active {
+    right: 0; 
+}
+
+
+
+.favorites-window h2 {
+    text-align: center;
+    font-size: 18px;
+    color: #333;
+}
+
+.favorites-window img {
+    width: 100px;
+    object-fit: cover;
+    height: 100px;
+    margin-right: 10px;
+    border-radius: 5px;
+
+    
+    
+}
+
+  
+  .favorites-window li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    
+  }
+  
+
+ 
+.favorite-button {
+    width: 100%; 
+    background-color: #282c34;
+    color: #fff;
+    padding: 8px;
+    border: none; 
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.favorite-button:hover {
+    background-color: #a57728;  
+}
+
+
+
+  
+  
+  .favorites{
+    background-color: none;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    scale: 0.8;
+    display: flex;
+    flex-direction: column-reverse;
+    order: 2;
+    text-align: right;
+    scale: 1.1;
+
+}
+
+
+
+.favorites:hover{
+    background: #c78f35;
+    border-radius: 30px;
+    transition: background-color 0.3s ease;
+}
+

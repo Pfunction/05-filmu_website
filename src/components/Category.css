@@ -1,0 +1,75 @@
+.category-container {
+    position: fixed;
+    top: 35%;
+    left: -150px;
+    opacity: 0.9;
+    z-index: 2;
+    background-color: #c78f35;
+    padding: 10px 10px 10px 0;
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
+    transition: left 0.3s ease-in-out;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row-reverse;
+}
+
+.category-container:hover {
+    left: 0;
+}
+
+ 
+.cat-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    max-height: 300px;  
+    overflow-y: auto;  
+    padding-right: 10px;  
+}
+
+ 
+.cat-buttons::-webkit-scrollbar {
+    width: 6px;
+}
+
+.cat-buttons::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 4px;
+}
+
+.cat-buttons::-webkit-scrollbar-track {
+    background: #c78f35;
+}
+
+.cat-buttons button {
+    background: none;
+    padding: 10px;
+    color: white;
+    font-weight: 500;
+    font-size: large;
+    border: none;
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
+    background-color: #282c34;
+    cursor: pointer;
+}
+
+.cat-buttons button:hover {
+    background-color: #1b1e24;
+    box-shadow: 1px 1px 1px 1px #1b1e24;
+}
+
+ 
+.category-container svg {
+    transform: rotate(0deg);
+    transition: transform 0.3s ease;
+    scale: 1.8;
+}
+
+.category-container:hover svg {
+    transform: rotate(180deg);
+}
+
+
