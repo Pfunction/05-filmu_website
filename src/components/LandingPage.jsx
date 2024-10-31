@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { MoviesFetch } from './MoviesAPI/APIdata.js';
+import { MoviesFetch, fetchTrailer } from './MoviesAPI/APIdata.js';
+import TrailerModal from './TrailerModal.jsx';
 import './LandingPage.css';
 import './Category.css';
 import './Favorites.css';
@@ -12,22 +13,34 @@ const LandingPage = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [favorites, setFavorites] = useState(storedFavorites);
   const [showFavorites, setShowFavorites] = useState(false);
+  const [load, setLoad] = useState(1);
+  const [trailerKey, setTrailerKey] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
+  // loads more movies when user clicks the button  
 
+  
+  const PageLoader = () => {
+    setLoad((prevLoad) => {
+      console.log(`Incrementing load from ${prevLoad} to ${prevLoad + 1}`);
+      return prevLoad + 1;
+    });
+  };
+  
+  //get movies
 
-  // fetches the movies from api when component loads
   useEffect(() => {
     const fetchMovies = async () => {
-      const movieData = await MoviesFetch();
-      setMovies(movieData);
+      const newMovieData = await MoviesFetch(load); 
+      setMovies((prevMovies) => {
+        const prevMovieIds = new Set(prevMovies.map((movie) => movie.id));
+        const uniqueNewMovies = newMovieData.filter((movie) => !prevMovieIds.has(movie.id));
+        return [...prevMovies, ...uniqueNewMovies];
+      });
     };
     fetchMovies();
-  }, []);
-
-  // keeps favorites in local storage updated
-  useEffect(() => {
-    localStorage.setItem('setFavorites', JSON.stringify(favorites));
-  }, [favorites]);
+  }, [load]);
+  
 
   // change selected category filter
   const handleCategoryChange = (id) => {
@@ -67,7 +80,25 @@ const LandingPage = () => {
     }
     return overview;
   }
-  //Trailer player
+
+  //trailer
+  const handleWatchTrailer = async (movieId) => {
+    const key = await fetchTrailer(movieId);
+    if (key) {
+      setTrailerKey(key);
+      setIsModalOpen(true);
+    } else {
+      alert('Trailer not available');
+    }
+  };
+
+  // Close the modal
+  const closeModal = () => {
+    setTrailerKey(null);
+    setIsModalOpen(false);
+  };
+
+
 
 
   // 
@@ -95,7 +126,7 @@ const LandingPage = () => {
             <button onClick={() => handleCategoryChange(28)}>Action</button>
             <button onClick={() => handleCategoryChange(12)}>Fantasy</button>
             <button onClick={() => handleCategoryChange(16)}>Animation</button>
-            <button onClick={() => handleCategoryChange(35)}>Thriller</button>
+            <button onClick={() => handleCategoryChange(35)}>Comedy</button>
             <button onClick={() => handleCategoryChange(80)}>Crime</button>
             <button onClick={() => handleCategoryChange(99)}>Documentary</button>
             <button onClick={() => handleCategoryChange(18)}>Drama</button>
@@ -108,18 +139,23 @@ const LandingPage = () => {
             <button onClick={() => handleCategoryChange(10749)}>Romance</button>
             <button onClick={() => handleCategoryChange(878)}>Science Fiction</button>
             <button onClick={() => handleCategoryChange(10752)}>War</button>
+            <button onClick={() => handleCategoryChange(53)}>Thriller</button>
             <button onClick={() => handleCategoryChange(37)}>Western</button>
+          
           </article>
         </div>
       </div>
 
       {/* movie list */}
-      <h1 className='top-title'>Top 100 Most Popular Movies</h1>
-      <p className='classic'>(Currently)</p>
+      <h1 className='top-title'>Most Watched Movies</h1>
+      <p className='classic'>(Data taken from TMDB)</p>
       <ul>
+
+        
         {filteredMovies.map((movie) => (
           <li key={movie.id}>
-            <img loading="lazy" width="502" height="752" src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} alt={movie.title}  />
+            <img onClick={() => handleWatchTrailer(movie.id)} loading="lazy" width="502" height="752" src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} alt={movie.title}  />
+           
 
             <h2>{movie.title}</h2>
             <p>Release Date: {movie.release_date}</p>
@@ -132,7 +168,8 @@ const LandingPage = () => {
       </ul>
 
 
-      {/* <button className="LoadMoreBtn">Load more</button> */}
+      <button onClick={PageLoader}  className="LoadMoreBtn">Load more</button>
+      {isModalOpen && <TrailerModal trailerKey={trailerKey} onClose={closeModal} />}
 
 
       {showFavorites && (
@@ -142,7 +179,8 @@ const LandingPage = () => {
             {favorites.length > 0 ? (
               favorites.map((movie) => (
                 <li key={movie.id}>
-                  <img src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} alt={movie.title} />
+                  <img onClick={() => handleWatchTrailer(movie.id)}  src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} alt={movie.title} />
+                  
                   <div>
                     <h3>{movie.title}</h3>
                     <button className="favorite-button" onClick={() => toggleFavorite(movie)}>
